@@ -188,8 +188,8 @@ def look_to_video_file(temp_file):
             # Добавляем номер кадра и данные изображения в список результатов
             frames_data.append({
                 #'timesslot': timeslot,  #если оставить так, то в ответ уйдут номера кадров начала и окончания таймслота
-                'fps':fps,
-                'timesslotF': timeslot,
+                # 'fps':fps,
+                # 'timesslotF': timeslot,
                 'timesslot': [int(timeslot[0] // fps), int(timeslot[1] // fps+1)], #так уйдут секунды. Округляем до целой секунды. Левую границу вниз, правую границу вверх
                 'frame_data': jpeg_frame.tolist()
             })
