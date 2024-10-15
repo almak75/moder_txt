@@ -1,3 +1,5 @@
+opencv-python-headless
+gdown
 fastapi==0.112.1
 uvicorn==0.30.6
 pillow-heif==0.18.0
