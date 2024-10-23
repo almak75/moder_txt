@@ -33,6 +33,8 @@ async  def get_predict_from_model(image):
     find_boxes = len(list_of_lists) #количество полученных полигонов. Если их ноль, то значит ничено нет. Нам надо 0 - нет, 1 если есть. там возвращается куча всего, можно тексты вырезать
     if  find_boxes:
         find_boxes = 1
+    else:
+        find_boxes = 0
     return  find_boxes
 
 
