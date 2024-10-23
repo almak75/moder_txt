@@ -33,8 +33,6 @@ async  def get_predict_from_model(image):
     find_boxes = len(list_of_lists) #количество полученных полигонов. Если их ноль, то значит ничено нет. Нам надо 0 - нет, 1 если есть. там возвращается куча всего, можно тексты вырезать
     if  find_boxes:
         find_boxes = 1
-    else:
-        find_boxes = 0
     return  find_boxes
 
 
@@ -43,7 +41,8 @@ async def look_to_file(img):
     rez = await asyncio.gather(
        get_predict_from_model(img),
        )
-    return {'need_moderation':rez}
+    rez = {'need_moderation':rez[0]}  #корутина вернет список, по этому берем первый элемент
+    return rez
 
 #====================================================================================
 #====================================================================================
