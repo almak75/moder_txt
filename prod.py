@@ -180,19 +180,10 @@ def look_to_video_file(temp_file):
     frames_data = [] #тут будем формировать структуру
     for timeslot in timeslots:
         key_frame = timeslot[0] #номер кадра, который нам надо отправить в ответ
-        video.set(cv2.CAP_PROP_POS_FRAMES, key_frame)
-        ret, frame = video.read()
-        if ret:
-            # Конвертируем изображение в формат JPEG для отправки
-            _, jpeg_frame = cv2.imencode('.jpg', frame)
             
-            # Добавляем номер кадра и данные изображения в список результатов
-            frames_data.append({
-                #'timesslot': timeslot,  #если оставить так, то в ответ уйдут номера кадров начала и окончания таймслота
-                # 'fps':fps, #может пригодиться, количество кадров в секунду
-        
+        #     # Добавляем номер кадра  в список результатов
+        frames_data.append({
                 'timesslot': [int(timeslot[0] // fps), int(timeslot[1] // fps+1)], #так уйдут секунды. Округляем до целой секунды. Левую границу вниз, правую границу вверх
-                'frame_data': jpeg_frame.tolist()
             })
 
 
