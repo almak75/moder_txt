@@ -8,10 +8,11 @@ from pillow_heif import register_heif_opener
 from datetime import datetime
 import os
 import numpy as np
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Form
 import gc
 import asyncio
 from tempfile import NamedTemporaryFile
+
 
 
 
@@ -44,10 +45,28 @@ async def analyze_image1(image: UploadFile = File(...)):
 
 #import ffmpeg
 
+# class VideoParams(BaseModel):
+#     step: int
+#     mode: int
+#     fast_terminate: int
+
+
+
 @app.post("/vd")
-async def analyze_video(video: UploadFile = File(...)):
+async def analyze_video(video: UploadFile = File(...),
+                        step: int = Form(default=10),
+                      mode: int = Form(default=0)
+                        ):
     global IND
     IND += 1
+
+    #STEP = 10   #используется для анализа видео, чтобы не анализировать все кадры.  Это шаг, через который анализируются кадры для снижения нагрузки
+                    #если в этом кадре будет найден текст, то проанализируются все кадры слева и справа
+                    #если текст найден не будет, то шагнем дальше
+    # mode = 0 - получение таймслотов
+    # mode = 1 - самый быстрый способ - ищем через step первый шаг с текстов и выходим из поиска   
+    # mode = 2 - ищем через step все кадры и возвращаем тогда только найденные секунды, где есть текcт
+    
 
     filename = video.filename
     # Разделяем имя файла на имя и расширение
@@ -58,10 +77,11 @@ async def analyze_video(video: UploadFile = File(...)):
     temp_file.write(video_file)
 
    
-    pok = prod.look_to_video_file(temp_file.name)
+    pok = prod.look_to_video_file(temp_file.name, step, mode)
+    #pok = 1
     temp_file.close()
     os.remove(temp_file.name)  #удаляем временный файл
-    if IND >= 500:
+    if IND >= 100:
             IND = 0   
             gc.collect() #почистимся 
     
